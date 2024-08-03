@@ -10,6 +10,7 @@
 
 <style lang="scss" scoped>
     .App{
-        display: flex;
+        width: 100%;
+        background: #eee;
     }
 </style>
