@@ -1,5 +1,5 @@
 <script setup>
-
+import { RouterLink } from 'vue-router';
 </script>
 
 <template>
@@ -14,16 +14,20 @@
         </p>
     </div>
     <div class="roles">
+        <RouterLink to="/manager">
         <div class="manager">
             <div class="role">
                 管理者
             </div>
         </div>
+    </RouterLink>
+    <RouterLink to="/layout"> 
         <div class="user">
             <div class="role">
                 投递者
             </div>
         </div>
+    </RouterLink>
     </div>
 </template>
 

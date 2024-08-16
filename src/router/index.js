@@ -8,12 +8,12 @@ const router=createRouter({
     history:createWebHistory(import.meta.env.BASE_URL),
     routes:[
         {
-            path:'/Layout',
-            component:Layout
+          path:'/',
+          component:Login
         },
         {
-          path:'/login',
-          component:Login
+            path:'/Layout',
+            component:Layout
         },
         {
           path:'/tip',

@@ -1,35 +1,117 @@
 <script setup>
-import {ref} from 'vue'
+import {ref,reactive} from 'vue'
+import { Memo, Files,User,OfficeBuilding} from '@element-plus/icons-vue'
+import axios from 'axios'
+import { ElMessage } from 'element-plus'
 
+// import { resumeAPI } from '@/apis/resume';
 
-const year=ref('')
+//方向选定style样式改变
+const labels = ref(['前端', '后端', 'UI', 'CV', 'nlp']);
+const activeIndex = ref(null); // 初始时没有激活的div  
+// 设置激活的div的索引  
+const setActive = (index) => {  
+    activeIndex.value = index;  
+};  
+
 //学年ele
-const sum=['22','23','24']
-const options = Array.from({ length: 3}).map((_, idx) => ({
-  value: `Option ${idx + 1}`,
-  label: `${sum[idx % 10]}`,
-}))
+const options = [
+  {
+    value: '23',
+    label: '23',
+  },
+  {
+    value: '24',
+    label: '24',
+  }
+]
+//水印样式定制
+const font = reactive({
+  color: 'rgba(0, 0, 0, 0.15)',
+})
 
+//value
+const year=ref('')
 const major=ref('')
 const name=ref('')
 const age=ref('')
+const sex=ref('')
+const num=ref('')
+const address=ref('')
+
+const merit=ref('')
+const demerit=ref('')
+const experience=ref('')
+const goal=ref('')
+const banji=ref('')
+
+//提交信息表单对象
+const resumeInfo= async () => {
+    const res= await axios({
+        url:'/resume',
+        method:'POST',
+        data:{
+            name:name.value,
+            sex:sex.value,
+            age:age.value,
+            joinYear:year.value,
+            studentId:num.value,
+            dormitory:address.value,
+            major:major.value,
+            direction:'前端',
+            advantages:merit.value,
+            disAdvantages:demerit.value,
+            experience:experience.value,
+            futureGoal:goal.value
+        }
+    })
+    console.log(res);
+    if(res.status=200)
+    {
+        ElMessage({
+            message: 'Congrats, this is a success message.',
+            type: 'success',
+        })
+    }
+    name.value='',
+    sex.value='',
+    age.value='',
+    year.value='',
+    num.value='',
+    address.value='',
+    major.value='',
+    merit.value='',
+    demerit.value='',
+    experience.value='',
+    goal.value='',
+    banji.value=''
+}
+
 </script>
 
 <template>
-    <div class="Layout">
+      <el-watermark :font="font" :content="['图灵智能创新团队']">
+        <div class="Layout">
         <div class="resHeader"></div>
         <div class="resContent">
+            <i class="title">基础信息</i>
             <div class="baseInfo">
                 <div class="row">
                     <div class="year">
                     <p>学年</p>
-                    <el-select-v2
-                        v-model="year"
-                        :options="options"
-                        placeholder="请选择你的入学学年"
-                        size="large"
-                        style="width:  100px"
-                        />
+                        <el-select
+                            v-model="year"
+                            placeholder="请选择你的入学学年"
+                            size="large"
+                            style="width: 100px"
+                            >
+                            <el-option
+                                v-for="item in options"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value"
+                            />
+                        </el-select>
                 </div>
                 <div class="major">
                     <p>专业</p>
@@ -38,22 +120,42 @@ const age=ref('')
                         style="width: 360px"
                         placeholder="请详细写下你的学院与专业"
                         clearable
+                        :prefix-icon="Files"
+                    />
+                </div>
+                <div class="num">
+                    <p>学号</p>
+                    <el-input
+                        v-model="num"
+                        style="width: 200px"
+                        clearable
+                        placeholder="例：“202311901234”"
+                        :prefix-icon="Memo"
                     />
                 </div>
                 </div>
                 <div class="row">
+                    <div class="class">
+                        <p>班级</p>
+                        <el-input
+                            v-model="banji"
+                            style="width: 100px"
+                            clearable
+                        />
+                    </div>
                     <div class="name">
-                    <p>姓名</p>
-                    <el-input
-                        v-model="name"
-                        style="width: 100px"
-                        clearable
-                    />
-                </div>
+                        <p>姓名</p>
+                        <el-input
+                            v-model="name"
+                            style="width: 100px"
+                            clearable
+                            :prefix-icon="User"
+                        />
+                    </div>
                 <div class="sex">
                     <p>性别</p>
-                    <i>男</i><input type="radio" name="sex" value="male">
-                    <i>女</i><input type="radio" name="sex" value="female">
+                    <i>男</i><input type="radio" name="sex" value="M" v-model="sex">
+                    <i>女</i><input type="radio" name="sex" value="F" v-model="sex">
                 </div>
                 <div class="age">
                     <p>年龄</p>
@@ -62,27 +164,26 @@ const age=ref('')
                         style="width: 60px;height: 30px;margin: 5px;"
                         clearable
                     />
-                    <i>(岁)</i>
                 </div>
+                <div class="address">
+                    <p>宿舍</p>
+                    <el-input
+                        v-model="address"
+                        style="width: 180px"
+                        placeholder="例:“海韵B”"
+                        clearable
+                        :prefix-icon="OfficeBuilding"
+                    />
+                    </div>
                 </div>
             </div>
+            <i class="title">选择你的方向</i>
             <div class="direction">
-                <div class="box">
-                    <i>前端</i>
-                </div>
-                <div class="box">
-                    <i>后端</i>
-                </div>
-                <div class="box">
-                    <i>UI</i>
-                </div>
-                <div class="box">
-                    <i>CV</i>
-                </div>
-                <div class="box">
-                    <i>nlp</i>
-                </div>
+                <div v-for="(label,index) in labels" :key="index" class="box" :class="{active: activeIndex===index}" @click="setActive(index)">  
+                    <i>{{ label }}</i>  
+                  </div>  
             </div>
+            <i class="title">个人介绍</i>
             <div class="detail">
                 <div class="relative">
                 <div class="merit">
@@ -132,10 +233,13 @@ const age=ref('')
             </div>
             </div>
             
-            <button>提交</button>
+            <button @click="resumeInfo">提交</button>
         </div>
         <div class="resFooter"></div>
-    </div>
+        </div>
+        </el-watermark>
+
+   
 </template>
 
 
@@ -156,6 +260,10 @@ const age=ref('')
             width: 900px;
             display: flex;
             flex-direction: column;
+            .title{
+                border-bottom: 2px solid gray;
+
+            }
             .baseInfo{
                 margin: auto;
                 // display: flex;
@@ -168,7 +276,13 @@ const age=ref('')
                     .major{
                     display: flex;
                     }
+                    .class{
+                        display: flex;
+                    }
                     .name{
+                        display: flex;
+                    }
+                    .num{
                         display: flex;
                     }
                     .sex{
@@ -177,11 +291,14 @@ const age=ref('')
                     .age{
                         display: flex;
                     }
+                    .address{
+                        display: flex;
+                    }
                     p{
                         margin: 10px;
                     }
                     i{
-                        margin: 10px 5px;
+                        margin: 10px 3px;
                     }
                     .el-input{
                         height: 40px;
@@ -197,17 +314,21 @@ const age=ref('')
                     width: 120px;
                     height: 195px;
                     background: #000;
-                    margin: 20px;
                     border-radius: 20px;
                     display: flex;
                     justify-content: center;
                     align-items: center;
+                    margin: 20px;
                     cursor: pointer;
+                    transition: 0.5s;
                     i{
                         font-size: 30px;
                         font-weight: 600;
                         color: #fff;
                     }
+                }
+                .active{
+                    opacity: 0.3;
                 }
                 .box:hover{
                     margin-top: -10px;
@@ -252,6 +373,7 @@ const age=ref('')
                 }
             }
             button{
+                cursor: pointer;
                 width: 100px;
                 border-radius: 15px;
                 margin: auto;

@@ -22,5 +22,20 @@ export default defineConfig({
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
+  },
+  //跨域代理
+  server:{
+    host:'0.0.0.0',
+    port:80,
+    proxy:{
+      '/resume':{
+        target:'http://orz.turingteam.xyz:9641',
+        changeOrigin:true
+      },
+      '/admin/queryResumes':{
+        target:'http://orz.turingteam.xyz:9641',
+        changeOrigin:true
+      }
+    }
   }
 })
