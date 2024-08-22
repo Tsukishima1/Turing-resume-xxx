@@ -18,7 +18,6 @@ httpInstance.interceptors.response.use(res=>res.data,e=>{
     //     message:e.response.data.message
     // })
     return Promise.reject(e)
-    return Promise.reject(e)
 })
 
 export default httpInstance

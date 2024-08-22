@@ -1,8 +1,9 @@
 <script setup>
 import {ref,reactive} from 'vue'
-import { Memo, Files,User,OfficeBuilding} from '@element-plus/icons-vue'
-import axios from 'axios'
-import { ElMessage } from 'element-plus'
+import { Memo, Files,User,OfficeBuilding,ArrowDown } from '@element-plus/icons-vue'
+import axios from 'axios';
+// import axios from 'axios'
+// import { ElMessage } from 'element-plus'
 
 // import { resumeAPI } from '@/apis/resume';
 
@@ -43,7 +44,7 @@ const merit=ref('')
 const demerit=ref('')
 const experience=ref('')
 const goal=ref('')
-const banji=ref('')
+const grade=ref('')
 
 //提交信息表单对象
 const resumeInfo= async () => {
@@ -62,14 +63,15 @@ const resumeInfo= async () => {
             advantages:merit.value,
             disAdvantages:demerit.value,
             experience:experience.value,
-            futureGoal:goal.value
+            futureGoal:goal.value,
+            grade:grade.value
         }
     })
     console.log(res);
     if(res.status=200)
     {
         ElMessage({
-            message: 'Congrats, this is a success message.',
+            message: '感谢你的填写，提交简历成功！',
             type: 'success',
         })
     }
@@ -84,15 +86,58 @@ const resumeInfo= async () => {
     demerit.value='',
     experience.value='',
     goal.value='',
-    banji.value=''
+    grade.value=''
 }
+
+//选择方向
 
 </script>
 
 <template>
       <el-watermark :font="font" :content="['图灵智能创新团队']">
         <div class="Layout">
-        <div class="resHeader"></div>
+        <div class="resHeader">
+            <div class="content">
+                <div class="title">
+                    <i>Turing-图灵2024招新简历投递</i>
+                </div>
+                <div class="contact">
+                    <el-dropdown>
+                        <span class="el-dropdown-link">
+                            添加方向负责人（微信号）
+                            <el-icon class="el-icon--right">
+                                <arrow-down />
+                            </el-icon>
+                        </span>
+                        <template #dropdown>
+                        <el-dropdown-menu>
+                            <el-dropdown-item divided>前端负责人:ANHOURlike</el-dropdown-item>
+                            <el-dropdown-item divided>后端负责人:wxid_o3k92zk4azqv22</el-dropdown-item>
+                            <el-dropdown-item divided>UI负责人</el-dropdown-item>
+                            <el-dropdown-item divided>CV负责人:YF0318a</el-dropdown-item>
+                            <el-dropdown-item divided>nlp负责人</el-dropdown-item>
+                        </el-dropdown-menu>
+                        </template>
+                    </el-dropdown>
+                </div>
+                <div class="question">
+                    <el-dropdown>
+                        <span class="el-dropdown-link">
+                            招新答疑群
+                            <el-icon class="el-icon--right">
+                                <arrow-down />
+                            </el-icon>
+                        </span>
+                        <template #dropdown>
+                        <el-dropdown-menu>
+                            <el-dropdown-item>招新2群</el-dropdown-item>
+                            <img src="/src/assets/images/turingNew.jpg" alt="" style="width: 200px;">
+                        </el-dropdown-menu>
+                        </template>
+                    </el-dropdown>
+                </div>
+                </div>
+        </div>
         <div class="resContent">
             <i class="title">基础信息</i>
             <div class="baseInfo">
@@ -138,7 +183,7 @@ const resumeInfo= async () => {
                     <div class="class">
                         <p>班级</p>
                         <el-input
-                            v-model="banji"
+                            v-model="grade"
                             style="width: 100px"
                             clearable
                         />
@@ -193,7 +238,9 @@ const resumeInfo= async () => {
                         style="width: 300px"
                         :rows="4"
                         type="textarea"
-                         maxlength="100"
+                        maxlength="100"
+                        show-word-limit
+                        resize="none"
                         placeholder="选择加入团队你有什么优点呢？选择这个方向你有什么优点呢？请你如实大胆地讲讲"
                     />
                 </div>
@@ -205,6 +252,8 @@ const resumeInfo= async () => {
                         :rows="4"
                         type="textarea"
                         maxlength="100"
+                        show-word-limit
+                        resize="none"
                         placeholder="做项目会有拖延ddl吗？学习态度时常三天打鱼两天晒网吗？请你如实认真地讲讲"
                     />
                 </div>
@@ -217,6 +266,8 @@ const resumeInfo= async () => {
                         :rows="3"
                         type="textarea"
                         maxlength="200"
+                        show-word-limit
+                        resize="none"
                         placeholder="如果有项目经历请简要叙述你在项目中的贡献并附上附件证明，如果没有则写无"
                     />
             </div>
@@ -228,31 +279,58 @@ const resumeInfo= async () => {
                         :rows="3"
                         type="textarea"
                         maxlength="200"
+                        show-word-limit
+                        resize="none"
                         placeholder="可以努力的方向有很多，在图灵你可以在选择的方向上学习深造，参加团队项目锻炼经验，打比赛累计资历进厂，以后读研继续深造计算机，那么你的规划是什么呢？"
                     />
             </div>
             </div>
-            
             <button @click="resumeInfo">提交</button>
         </div>
         <div class="resFooter"></div>
         </div>
         </el-watermark>
-
-   
 </template>
 
 
 <style lang="scss" scoped>
     .Layout{
+        min-width: 900px;
         width: 100%;
         background: #eee;
         .resHeader{
+            min-width: 900px;
             width: 100%;
             height: 50px;
             background: sandybrown;
             margin-bottom: 10px;
-
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            .content{
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                .title{
+                    margin: 0 150px;
+                    font-weight: 600;
+                    font-size: 20px;
+                }
+                .contact{
+                    margin: 0 20px;
+                    cursor: pointer;
+                }
+                .question{
+                    margin: 0 20px;
+                    cursor: pointer;
+                }
+                .el-dropdown-link{
+                    color: #fff;
+                    font-weight: 700;
+                }
+            }
+            
+            
         }
         .resContent{
             background: #fff;
@@ -262,7 +340,7 @@ const resumeInfo= async () => {
             flex-direction: column;
             .title{
                 border-bottom: 2px solid gray;
-
+                padding-bottom: 5px;
             }
             .baseInfo{
                 margin: auto;
@@ -378,6 +456,7 @@ const resumeInfo= async () => {
                 border-radius: 15px;
                 margin: auto;
                 margin-top: 10px;
+                margin-bottom: 20px;
                 background-image: linear-gradient(45deg, #FF512F 0%, #F09819  51%, #FF512F  100%);
                 padding: 15px 30px;
                 text-align: center;
