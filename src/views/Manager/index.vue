@@ -20,12 +20,7 @@ let data=ref({
             })
 
 //获取简历信息
-    // const getInfo= async()=>{
-    //     const res=await getInfoAPI(data)
-    //     result.value=res.data.data.records
-    //     console.log(res);
-         
-    // }
+    
     const getInfo= async()=>{
         const res=await axios({
             url:'/admin/queryResumes',
@@ -37,7 +32,6 @@ let data=ref({
             }
         })
         result.value=res.data.data.records
-        console.log(res);
     }
 //改变方向
     const changeDir=(string)=>{
@@ -53,34 +47,36 @@ let data=ref({
 
 //获取简历投递数
 const getNum=async()=>{
-    const res=await getNumAPI()
+    const res=await axios({
+    url:'/admin/numbers',
+    method:'GET'
+    })
     let list=res.data.data.records
     console.log(list);
     
-    // list.forEach(item => {
-    //     if(item.direction=='前端')
-    //     {
-    //         fontNum=item.numbers
-    //     }
-    //     if(item.direction=='后端')
-    //     {
-    //         behindNum=item.numbers
-    //     }
-    //     if(item.direction=='cv')
-    //     {
-    //         uiNum=item.numbers
-    //     }
-    //     if(item.direction=='ui')
-    //     {
-    //         cvNum=item.numbers
-    //     }
-    //     if(item.direction=='nlp')
-    //     {
-    //         nlpNum=item.numbers
-    //     }
-    // });
+    list.forEach(item => {
+        if(item.direction=='前端')
+        {
+            fontNum.value=item.numbers
+        }
+        if(item.direction=='后端')
+        {
+            behindNum.value=item.numbers
+        }
+        if(item.direction=='ui')
+        {
+            uiNum.value=item.numbers
+        }
+        if(item.direction=='cv')
+        {
+            cvNum.value=item.numbers
+        }
+        if(item.direction=='nlp')
+        {
+            nlpNum.value=item.numbers
+        }
+    });
 }
-
 onMounted(() => getNum())
 </script>
 
@@ -88,11 +84,11 @@ onMounted(() => getNum())
     <div class="manager">
         <div class="select">
             <div class="boxes">
-                <div class="box a" @click="changeDir('前端')"><p>前端</p><i class="num">{{ fontNum.value }}</i></div>
-                <div class="box b" @click="changeDir('后端')"><p>后端</p><i class="num">{{ behindNum.value }}</i></div>
-                <div class="box c" @click="changeDir('ui')"><p>UI</p><i class="num">{{ uiNum.value }}</i></div>
-                <div class="box d" @click="changeDir('cv')"><p>CV</p><i class="num">{{ cvNum.value }}</i></div>
-                <div class="box e" @click="changeDir('nlp')"><p>nlp</p><i class="num">{{ nlpNum.value }}</i></div>
+                <div class="box a" @click="changeDir('前端')"><p>前端</p><i class="num">{{ fontNum }}</i></div>
+                <div class="box b" @click="changeDir('后端')"><p>后端</p><i class="num">{{ behindNum }}</i></div>
+                <div class="box c" @click="changeDir('ui')"><p>UI</p><i class="num">{{ uiNum }}</i></div>
+                <div class="box d" @click="changeDir('cv')"><p>CV</p><i class="num">{{ cvNum}}</i></div>
+                <div class="box e" @click="changeDir('nlp')"><p>nlp</p><i class="num">{{ nlpNum }}</i></div>
             </div>
         </div>
         <div class="show">

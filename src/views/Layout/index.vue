@@ -1,8 +1,7 @@
 <script setup>
 import {ref,reactive} from 'vue'
 import { Memo, Files,User,OfficeBuilding,ArrowDown } from '@element-plus/icons-vue'
-import { resumeAPI } from '@/apis/resume'
-
+import axios from 'axios'
 
 //value
 const year=ref('')
@@ -90,7 +89,8 @@ const resumeInfo= async () => {
             message: '感谢你的填写，提交简历成功！',
             type: 'success',
         })
-    }      
+    }
+   
 }
 </script>
 
@@ -167,6 +167,7 @@ const resumeInfo= async () => {
                         placeholder="请详细写下你的学院与专业"
                         clearable
                         :prefix-icon="Files"
+                        onkeyup="value=value.replace(/[^\u4E00-\u9FA5]/g,'')"
                     />
                 </div>
                 <div class="num">
@@ -177,6 +178,7 @@ const resumeInfo= async () => {
                         clearable
                         placeholder="例：“202311901234”"
                         :prefix-icon="Memo"
+                        oninput ="value=value.replace(/[^\d]/g,'')"
                     />
                 </div>
                 </div>
@@ -196,6 +198,7 @@ const resumeInfo= async () => {
                             style="width: 100px"
                             clearable
                             :prefix-icon="User"
+                            onkeyup="value=value.replace(/[^\u4E00-\u9FA5]/g,'')"
                         />
                     </div>
                 <div class="sex">
@@ -209,6 +212,7 @@ const resumeInfo= async () => {
                         v-model="age"
                         style="width: 60px;height: 30px;margin: 5px;"
                         clearable
+                        oninput ="value=value.replace(/[^\d]/g,'')"
                     />
                 </div>
                 <div class="address">
@@ -219,6 +223,7 @@ const resumeInfo= async () => {
                         placeholder="例:“海韵B”"
                         clearable
                         :prefix-icon="OfficeBuilding"
+                        onkeyup="value=value.replace(/[^\u4E00-\u9FA5]/g,'')"
                     />
                     </div>
                 </div>
@@ -242,6 +247,7 @@ const resumeInfo= async () => {
                         maxlength="100"
                         show-word-limit
                         resize="none"
+                        onkeyup="value=value.replace(/[^\u4E00-\u9FA5]/g,'')"
                         placeholder="选择加入团队你有什么优点呢？选择这个方向你有什么优点呢？请你如实大胆地讲讲"
                     />
                 </div>
@@ -255,6 +261,7 @@ const resumeInfo= async () => {
                         maxlength="100"
                         show-word-limit
                         resize="none"
+                        onkeyup="value=value.replace(/[^\u4E00-\u9FA5]/g,'')"
                         placeholder="做项目会有拖延ddl吗？学习态度时常三天打鱼两天晒网吗？请你如实认真地讲讲"
                     />
                 </div>
@@ -269,7 +276,8 @@ const resumeInfo= async () => {
                         maxlength="200"
                         show-word-limit
                         resize="none"
-                        placeholder="如果有项目经历请简要叙述你在项目中的贡献并附上附件证明，如果没有则写无"
+                        onkeyup="value=value.replace(/[^\u4E00-\u9FA5]/g,'')"
+                        placeholder="如果有项目经历请简要叙述你在项目中的贡献，如果没有则写无"
                     />
             </div>
             <div class="goal">
@@ -282,6 +290,7 @@ const resumeInfo= async () => {
                         maxlength="200"
                         show-word-limit
                         resize="none"
+                        onkeyup="value=value.replace(/[^\u4E00-\u9FA5]/g,'')"
                         placeholder="可以努力的方向有很多，在图灵你可以在选择的方向上学习深造，参加团队项目锻炼经验，打比赛累计资历进厂，以后读研继续深造计算机，那么你的规划是什么呢？"
                     />
             </div>
@@ -443,13 +452,8 @@ const resumeInfo= async () => {
                     .merit{
                         margin-right: 70px;
                     }
-                    .demerit{
-                    }
                 }
-                .experience{
-                }
-                .goal{
-                }
+                
             }
             button{
                 cursor: pointer;
