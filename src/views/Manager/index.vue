@@ -2,7 +2,6 @@
 import {ref,watch,onMounted} from 'vue'
 import { getInfoAPI,getNumAPI } from '@/apis/getInfo';
 import axios from 'axios'
-
 const result=ref([])
 const currentPage=ref(1)
 const direction=ref()
@@ -21,9 +20,24 @@ let data=ref({
             })
 
 //获取简历信息
+    // const getInfo= async()=>{
+    //     const res=await getInfoAPI(data)
+    //     result.value=res.data.data.records
+    //     console.log(res);
+         
+    // }
     const getInfo= async()=>{
-        const res=await getInfoAPI(data)
+        const res=await axios({
+            url:'/admin/queryResumes',
+            method:'POST',
+            data:{
+                currentPage:currentPage.value,
+                pageSize:10,
+                direction:direction.value
+            }
+        })
         result.value=res.data.data.records
+        console.log(res);
     }
 //改变方向
     const changeDir=(string)=>{
@@ -38,36 +52,36 @@ let data=ref({
     });
 
 //获取简历投递数
-/*const getNum=async()=>{
+const getNum=async()=>{
     const res=await getNumAPI()
     let list=res.data.data.records
     console.log(list);
     
-    list.forEach(item => {
-        if(item.direction=='前端')
-        {
-            fontNum=item.numbers
-        }
-        if(item.direction=='后端')
-        {
-            behindNum=item.numbers
-        }
-        if(item.direction=='cv')
-        {
-            uiNum=item.numbers
-        }
-        if(item.direction=='ui')
-        {
-            cvNum=item.numbers
-        }
-        if(item.direction=='nlp')
-        {
-            nlpNum=item.numbers
-        }
-    });
+    // list.forEach(item => {
+    //     if(item.direction=='前端')
+    //     {
+    //         fontNum=item.numbers
+    //     }
+    //     if(item.direction=='后端')
+    //     {
+    //         behindNum=item.numbers
+    //     }
+    //     if(item.direction=='cv')
+    //     {
+    //         uiNum=item.numbers
+    //     }
+    //     if(item.direction=='ui')
+    //     {
+    //         cvNum=item.numbers
+    //     }
+    //     if(item.direction=='nlp')
+    //     {
+    //         nlpNum=item.numbers
+    //     }
+    // });
 }
 
-onMounted(() => getNum())*/
+onMounted(() => getNum())
 </script>
 
 <template>

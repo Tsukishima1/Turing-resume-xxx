@@ -1,32 +1,8 @@
 <script setup>
 import {ref,reactive} from 'vue'
 import { Memo, Files,User,OfficeBuilding,ArrowDown } from '@element-plus/icons-vue'
-import { resumeAPI } from './apis/resume'
-import axios from 'axios'
+import { resumeAPI } from '@/apis/resume'
 
-//方向选定style样式改变
-const labels = ref(['前端', '后端', 'ui', 'cv', 'nlp']);
-const activeIndex = ref(null); // 初始时没有激活的div  
-// 设置激活的div的索引  
-const setActive = (index) => {  
-    activeIndex.value = index;  
-};  
-
-//学年ele
-const options = [
-  {
-    value: '23',
-    label: '23',
-  },
-  {
-    value: '24',
-    label: '24',
-  }
-]
-//水印样式定制
-const font = reactive({
-  color: 'rgba(0, 0, 0, 0.15)',
-})
 
 //value
 const year=ref('')
@@ -43,7 +19,55 @@ const experience=ref('')
 const goal=ref('')
 const grade=ref('')
 let isDisabled=ref(false)
-let data=ref({
+// let data=ref({
+//             name:name.value,
+//             sex:sex.value,
+//             age:age.value,
+//             joinYear:year.value,
+//             studentId:num.value,
+//             dormitory:address.value,
+//             major:major.value,
+//             direction:labels.value[activeIndex.value],
+//             advantages:merit.value,
+//             disAdvantages:demerit.value,
+//             experience:experience.value,
+//             futureGoal:goal.value,
+//             grade:grade.value
+//         })
+
+//方向选定style样式改变
+const labels = ref(['前端', '后端', 'ui', 'cv', 'nlp']);
+const activeIndex = ref(null); // 初始时没有激活的div  
+
+// 设置激活的div的索引  
+const setActive = (index) => {  
+    activeIndex.value = index;  
+};  
+
+//学年ele
+const options = [
+  {
+    value: '23',
+    label: '23',
+  },
+  {
+    value: '24',
+    label: '24',
+  }
+]
+
+//水印样式定制
+const font = reactive({
+  color: 'rgba(0, 0, 0, 0.15)',
+})
+
+//提交信息表单对象
+const resumeInfo= async () => {
+    isDisabled.value=true
+    const res= await axios({
+        url:'/resume',
+        method:'POST',
+        data:{
             name:name.value,
             sex:sex.value,
             age:age.value,
@@ -57,11 +81,8 @@ let data=ref({
             experience:experience.value,
             futureGoal:goal.value,
             grade:grade.value
-        })
-//提交信息表单对象
-const resumeInfo= async () => {
-    isDisabled.value=true
-    const res= await resumeAPI()
+        }
+    })
     console.log(res);
     if(res.status=200)
     {
@@ -71,7 +92,6 @@ const resumeInfo= async () => {
         })
     }      
 }
-
 </script>
 
 <template>
@@ -93,8 +113,8 @@ const resumeInfo= async () => {
                         <template #dropdown>
                         <el-dropdown-menu>
                             <el-dropdown-item divided>前端负责人:ANHOURlike</el-dropdown-item>
-                            <el-dropdown-item divided>后端负责人:wxid_o3k92zk4azqv22</el-dropdown-item>
-                            <el-dropdown-item divided>UI负责人</el-dropdown-item>
+                            <el-dropdown-item divided>后端负责人:CZC770726404</el-dropdown-item>
+                            <el-dropdown-item divided>UI负责人:</el-dropdown-item>
                             <el-dropdown-item divided>CV负责人:YF0318a</el-dropdown-item>
                             <el-dropdown-item divided>nlp负责人</el-dropdown-item>
                         </el-dropdown-menu>

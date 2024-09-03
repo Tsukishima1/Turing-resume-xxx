@@ -13,10 +13,10 @@ httpInstance.interceptors.request.use(config=>{
 
 //响应拦截器
 httpInstance.interceptors.response.use(res=>res.data,e=>{
-    // ElMessage({
-    //     type:'waring',
-    //     message:e.response.data.message
-    // })
+    ElMessage({
+        type:'waring',
+        message:e.response.data.message
+    })
     return Promise.reject(e)
 })
 
