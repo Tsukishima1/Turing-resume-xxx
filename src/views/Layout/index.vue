@@ -1,14 +1,11 @@
 <script setup>
 import {ref,reactive} from 'vue'
 import { Memo, Files,User,OfficeBuilding,ArrowDown } from '@element-plus/icons-vue'
-import axios from 'axios';
-// import axios from 'axios'
-// import { ElMessage } from 'element-plus'
-
-// import { resumeAPI } from '@/apis/resume';
+import { resumeAPI } from './apis/resume'
+import axios from 'axios'
 
 //方向选定style样式改变
-const labels = ref(['前端', '后端', 'UI', 'CV', 'nlp']);
+const labels = ref(['前端', '后端', 'ui', 'cv', 'nlp']);
 const activeIndex = ref(null); // 初始时没有激活的div  
 // 设置激活的div的索引  
 const setActive = (index) => {  
@@ -45,13 +42,8 @@ const demerit=ref('')
 const experience=ref('')
 const goal=ref('')
 const grade=ref('')
-
-//提交信息表单对象
-const resumeInfo= async () => {
-    const res= await axios({
-        url:'/resume',
-        method:'POST',
-        data:{
+let isDisabled=ref(false)
+let data=ref({
             name:name.value,
             sex:sex.value,
             age:age.value,
@@ -59,14 +51,17 @@ const resumeInfo= async () => {
             studentId:num.value,
             dormitory:address.value,
             major:major.value,
-            direction:'前端',
+            direction:labels.value[activeIndex.value],
             advantages:merit.value,
             disAdvantages:demerit.value,
             experience:experience.value,
             futureGoal:goal.value,
             grade:grade.value
-        }
-    })
+        })
+//提交信息表单对象
+const resumeInfo= async () => {
+    isDisabled.value=true
+    const res= await resumeAPI()
     console.log(res);
     if(res.status=200)
     {
@@ -74,22 +69,8 @@ const resumeInfo= async () => {
             message: '感谢你的填写，提交简历成功！',
             type: 'success',
         })
-    }
-    name.value='',
-    sex.value='',
-    age.value='',
-    year.value='',
-    num.value='',
-    address.value='',
-    major.value='',
-    merit.value='',
-    demerit.value='',
-    experience.value='',
-    goal.value='',
-    grade.value=''
+    }      
 }
-
-//选择方向
 
 </script>
 
@@ -235,7 +216,7 @@ const resumeInfo= async () => {
                     <p>你的优点</p>
                     <el-input
                         v-model="merit"
-                        style="width: 300px"
+                        style="width: 300px;font-size: 15px;"
                         :rows="4"
                         type="textarea"
                         maxlength="100"
@@ -248,7 +229,7 @@ const resumeInfo= async () => {
                     <p>你的缺点</p>
                     <el-input
                         v-model="demerit"
-                        style="width: 300px"
+                        style="width: 300px;font-size: 15px;"
                         :rows="4"
                         type="textarea"
                         maxlength="100"
@@ -262,7 +243,7 @@ const resumeInfo= async () => {
                 <p>项目经历</p>
                 <el-input
                         v-model="experience"
-                        style="width: 600px"
+                        style="width: 600px;font-size: 15px;"
                         :rows="3"
                         type="textarea"
                         maxlength="200"
@@ -275,7 +256,7 @@ const resumeInfo= async () => {
                 <p>未来展望</p>
                 <el-input
                         v-model="goal"
-                        style="width: 600px"
+                        style="width: 600px;font-size: 15px;"
                         :rows="3"
                         type="textarea"
                         maxlength="200"
@@ -285,7 +266,7 @@ const resumeInfo= async () => {
                     />
             </div>
             </div>
-            <button @click="resumeInfo">提交</button>
+            <button @click="resumeInfo" :disabled="isDisabled" :class="{activeButton: isDisabled?true:false }" >提交</button>
         </div>
         <div class="resFooter"></div>
         </div>
@@ -470,6 +451,11 @@ const resumeInfo= async () => {
                 font-weight: 700;
                 box-shadow: 0px 0px 14px -7px #f09819;
             }
+            .activeButton{
+                background: rgb(0,0,0);
+                background: linear-gradient(308deg, rgba(0,0,0,1) 7%, rgba(224,224,224,0.9838060224089635) 74%, rgba(245,245,245,0.99781162464986) 100%);
+            }
+
         }
     }
 </style>

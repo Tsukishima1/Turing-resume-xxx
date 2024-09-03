@@ -1,24 +1,29 @@
 <script setup>
-import {ref,watch} from 'vue'
+import {ref,watch,onMounted} from 'vue'
+import { getInfoAPI,getNumAPI } from '@/apis/getInfo';
 import axios from 'axios'
 
 const result=ref([])
 const currentPage=ref(1)
 const direction=ref()
-const activeNames = ref(['1'])
+const activeNames = ref(['0'])
+
+//简历数
+let fontNum=ref(0)
+let behindNum=ref(0)
+let uiNum=ref(0)
+let cvNum=ref(0)
+let nlpNum=ref(0)
+let data=ref({
+                currentPage:currentPage.value,
+                pageSize:10,
+                direction:direction.value
+            })
+
 //获取简历信息
     const getInfo= async()=>{
-        const res=await axios({
-            url:'/admin/queryResumes',
-            method:'POST',
-            data:{
-                    currentPage:currentPage.value,
-                    pageSize:10,
-                    direction:direction.value
-                }
-        })
+        const res=await getInfoAPI(data)
         result.value=res.data.data.records
-        console.log(res);
     }
 //改变方向
     const changeDir=(string)=>{
@@ -31,25 +36,49 @@ const activeNames = ref(['1'])
     watch(currentPage, (newValue, oldValue) => {
         getInfo()
     });
+
 //获取简历投递数
-// const getNum=async()=>{
-//     const res=await axios({
-//         url:'/admin/numbers',
-//         method:'GET'
-//     })
-// }
-// getNum()
+/*const getNum=async()=>{
+    const res=await getNumAPI()
+    let list=res.data.data.records
+    console.log(list);
+    
+    list.forEach(item => {
+        if(item.direction=='前端')
+        {
+            fontNum=item.numbers
+        }
+        if(item.direction=='后端')
+        {
+            behindNum=item.numbers
+        }
+        if(item.direction=='cv')
+        {
+            uiNum=item.numbers
+        }
+        if(item.direction=='ui')
+        {
+            cvNum=item.numbers
+        }
+        if(item.direction=='nlp')
+        {
+            nlpNum=item.numbers
+        }
+    });
+}
+
+onMounted(() => getNum())*/
 </script>
 
 <template>
     <div class="manager">
         <div class="select">
             <div class="boxes">
-                <div class="box a" @click="changeDir('前端')"><p>前端</p><i class="num">33</i></div>
-                <div class="box b" @click="changeDir('后端')"><p>后端</p><i class="num">23</i></div>
-                <div class="box c" @click="changeDir('ui')"><p>UI</p><i class="num">44</i></div>
-                <div class="box d" @click="changeDir('cv')"><p>CV</p><i class="num">78</i></div>
-                <div class="box e" @click="changeDir('nlp')"><p>nlp</p><i class="num">11</i></div>
+                <div class="box a" @click="changeDir('前端')"><p>前端</p><i class="num">{{ fontNum.value }}</i></div>
+                <div class="box b" @click="changeDir('后端')"><p>后端</p><i class="num">{{ behindNum.value }}</i></div>
+                <div class="box c" @click="changeDir('ui')"><p>UI</p><i class="num">{{ uiNum.value }}</i></div>
+                <div class="box d" @click="changeDir('cv')"><p>CV</p><i class="num">{{ cvNum.value }}</i></div>
+                <div class="box e" @click="changeDir('nlp')"><p>nlp</p><i class="num">{{ nlpNum.value }}</i></div>
             </div>
         </div>
         <div class="show">
@@ -58,30 +87,7 @@ const activeNames = ref(['1'])
             :column="4"
             border
             v-for="item in result"
-            >
-                <!-- <el-descriptions-item label="学年">{{ item.joinYear }}</el-descriptions-item>
-                <el-descriptions-item label="专业">{{ item.major }}</el-descriptions-item>
-                <el-descriptions-item label="学号" >{{ item.studentId }}</el-descriptions-item>
-                <el-descriptions-item label="姓名" :span="2">{{ item.name }}</el-descriptions-item>
-                <el-descriptions-item label="班级" >{{ item.grade }}</el-descriptions-item>
-                <el-descriptions-item label="性别" >{{ item.sex }}</el-descriptions-item>
-                <el-descriptions-item label="宿舍" >{{ item.dormitory }}</el-descriptions-item>
-                <el-descriptions-item label="方向">
-                <el-tag size="small">{{ item.direction }}</el-tag>
-                </el-descriptions-item>
-                <el-descriptions-item label="优点" width="432px">
-                    {{ item.advantages }}
-                </el-descriptions-item>
-                <el-descriptions-item label="缺点" width="432px">
-                    {{ item.disAdvantages }}
-                </el-descriptions-item>
-                <el-descriptions-item label="项目经历" width="432px">
-                    {{ item.experience }}
-                </el-descriptions-item>
-                <el-descriptions-item label="未来期望" width="432px">
-                    {{ item.futureGoal }}
-                </el-descriptions-item> -->
-                
+            >  
             </el-descriptions>
             <div class="content"  v-for="item in result">
                 <div class="cow">

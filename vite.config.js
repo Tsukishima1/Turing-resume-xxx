@@ -35,6 +35,10 @@ export default defineConfig({
       '/admin/queryResumes':{
         target:'http://orz.turingteam.xyz:9641',
         changeOrigin:true
+      },
+      '/admin/numbers':{
+        target:'http://orz.turingteam.xyz:9641',
+        changeOrigin:true 
       }
     }
   }
