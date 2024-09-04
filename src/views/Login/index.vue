@@ -3,97 +3,48 @@ import { RouterLink } from 'vue-router';
 </script>
 
 <template>
-    <div class="bgImg">
-        <img class="img" src="/src/assets/images/bg.jpg" style="display: inline-block;height: 100%;width: 100%;">
-        <p style="font-size: 12px;color:#aaa;">
-            版权引用：
-            <a href="https://pixabay.com/photos/man-buffalos-beach-herd-herding-5647507/"><span style="font-size: 12px;color:black;">“Man Buffalos Beach”</span> </a>由 
-            <a href="https://pixabay.com/users/raw_image6-18531141/"><span style="font-size: 12px;color:black;">Raw_Image6</span></a> 授权许可 
-            <span><a href="https://pixabay.com/service/license/" target="_blank" style="font-size: 12px;color:black;">Pixabay版权使用许可说明
-               </a></span>
-        </p>
-    </div>
-    <div class="roles">
+    <div class="main">
         <RouterLink to="/manager">
-        <div class="manager">
-            <div class="role">
-                管理者
-            </div>
+        <div class="manager card">
+            <p>查看已投递信息 🎇</p>
         </div>
-    </RouterLink>
-    <RouterLink to="/layout"> 
-        <div class="user">
-            <div class="role">
-                投递者
-            </div>
+        </RouterLink>
+        <RouterLink to="/layout">
+        <div class="user card"> 
+            <p>我要投递简历 📂</p>      
         </div>
-    </RouterLink>
+        </RouterLink>
     </div>
 </template>
 
 <style lang="scss" scoped>
-    .bgImg{
-        position: relative;
-    }
-    .roles{
-        position: absolute;
-        top: 30vh;
-        left: 40vw;
-        .manager {
-        width: 150px;
-        height: 150px;
-        background-color: #f64f59;
-        background-image: url(/src/assets/images/turing.png);
-        background-repeat: no-repeat;
-        background-position: 0 10px;
-        border-radius: 1rem;
-        border: #f64f59 0.2rem solid;
-        transition: all 0.2s ease-in;
-        box-shadow: 0.4rem 0.4rem 0.6rem #00000040;
+    .main {
+        background-image: url('https://www.freeimg.cn/i/2024/09/04/66d86e475c5ef.png');
+        background-size: cover;
         display: flex;
         justify-content: center;
         align-items: center;
-        cursor: pointer;
-        .role{
-            font-size: 30px;
-            font-weight: 900;
-            color: #000;
-        }
-        }
-        .manager:hover {
-        transform: translateY(-1.5rem);
-        border: #f2295bf0 0.3em solid;
-        border-radius: 2.5rem 0 2.5rem 0;
-        }
-
-        .user {
-        width: 200px;
-        height: 200px;
-        background-color: #12c2e9;
-        background-image: url(/src/assets/images/turing.png);
-        background-repeat: no-repeat;
-        background-position: 25px 30px;
-        border-radius: 1rem;
-        border: #12c2e9 0.3rem solid;
-        transition: all 0.2s ease-in;
-        box-shadow: 0.4rem 0.4rem 0.6rem #00000040;
-        margin-left: 150px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        cursor: pointer;
-        .role{
-                font-size: 30px;
-                font-weight: 900;
-                color: #000;
+        gap: 100px;
+        height: 100vh;
+        .card {
+            background-color: rgba(255, 255, 255, 0.255);
+            padding: 50px;
+            border-radius: 20px;
+            cursor: pointer;
+            box-shadow: 0 0 5px 0 rgb(247, 247, 247);
+            font-size: 1.1rem;
+            backdrop-filter: blur(2px); /* 添加毛玻璃效果 */
+            -webkit-backdrop-filter: blur(5px); 
+            position: relative; 
+            p {
+                color: white;
+                text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+            }
+            &:hover {
+                background-color: rgba(255, 255, 255, 0.347);
+                transform: scale(1.05);
+                transition: all 0.15s ease;
             }
         }
-
-        .user:hover {
-        transform: translateY(-1.5rem);
-        border: #f2295bf0 0.2em solid;
-        border-radius: 2.5rem 0 2.5rem 0;
-        }
     }
-
 </style>
