@@ -1,23 +1,19 @@
 <script setup>
 import {ref,watch,onMounted} from 'vue'
 import { getInfoAPI,getNumAPI } from '@/apis/getInfo';
+
 import axios from 'axios'
 const result=ref([])
 const currentPage=ref(1)
 const direction=ref()
 const activeNames = ref(['0'])
-
+let tableData = ref([])
 //简历数
 let fontNum=ref(0)
 let behindNum=ref(0)
 let uiNum=ref(0)
 let cvNum=ref(0)
 let nlpNum=ref(0)
-let data=ref({
-                currentPage:currentPage.value,
-                pageSize:10,
-                direction:direction.value
-            })
 
 //获取简历信息
     
@@ -31,7 +27,7 @@ let data=ref({
                 direction:direction.value
             }
         })
-        result.value=res.data.data.records
+        tableData.value=res.data.data.records
     }
 //改变方向
     const changeDir=(string)=>{
@@ -84,12 +80,31 @@ onMounted(() => getNum())
     <div class="manager">
         <div class="select">
             <div class="boxes">
-                <div class="box a" @click="changeDir('前端')"><p>前端</p><i class="num">{{ fontNum }}</i></div>
-                <div class="box b" @click="changeDir('后端')"><p>后端</p><i class="num">{{ behindNum }}</i></div>
-                <div class="box c" @click="changeDir('ui')"><p>UI</p><i class="num">{{ uiNum }}</i></div>
-                <div class="box d" @click="changeDir('cv')"><p>CV</p><i class="num">{{ cvNum}}</i></div>
-                <div class="box e" @click="changeDir('nlp')"><p>nlp</p><i class="num">{{ nlpNum }}</i></div>
+                <div class="box" @click="changeDir('前端')"><p>前端</p><i class="num">{{ fontNum }}</i></div>
+                <div class="box" @click="changeDir('后端')"><p>后端</p><i class="num">{{ behindNum }}</i></div>
+                <div class="box" @click="changeDir('ui')"><p>UI</p><i class="num">{{ uiNum }}</i></div>
+                <div class="box" @click="changeDir('cv')"><p>CV</p><i class="num">{{ cvNum}}</i></div>
+                <div class="box" @click="changeDir('nlp')"><p>nlp</p><i class="num">{{ nlpNum }}</i></div>
             </div>
+            <el-table :data="tableData" style="width:100%">
+                        <el-table-column label="方向"  prop="direction" width="100"/>
+                        <el-table-column label="基本信息" width="400">
+                            <el-table-column label="学年" prop="joinYear"></el-table-column>
+                            <el-table-column label="专业" prop="major"></el-table-column>
+                            <el-table-column label="班级" prop="grade"></el-table-column>
+                            <el-table-column label="学号" prop="studentId"></el-table-column>
+                            <el-table-column label="姓名" prop="name"></el-table-column>
+                            <el-table-column label="年龄" prop="age"></el-table-column>
+                            <el-table-column label="性别" prop="sex"></el-table-column>
+                            <el-table-column label="宿舍" prop="dormitory"></el-table-column>
+                        </el-table-column>
+                        <el-table-column label="个人热点" width="800">
+                            <el-table-column label="优点" prop="advantages"></el-table-column>
+                            <el-table-column label="缺点" prop="disAdvantages"></el-table-column>
+                            <el-table-column label="期望" prop="experience"></el-table-column>
+                            <el-table-column label="项目经历" prop="futureGoal"></el-table-column>
+                    </el-table-column>
+            </el-table>
         </div>
         <div class="show">
             <el-descriptions
@@ -99,7 +114,7 @@ onMounted(() => getNum())
             v-for="item in result"
             >  
             </el-descriptions>
-            <div class="content"  v-for="item in result">
+            <!-- <div class="content"  v-for="item in result">
                 <div class="cow">
                     <div class="baseinfo-descriptions-item">
                         <svg t="1724318867373" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4715" width="15px" height="15px" ><path d="M1024 512a170.666667 170.666667 0 0 0-31.573333-98.133333l8.533333-10.24L597.333333 0H170.666667a170.666667 170.666667 0 0 0-170.666667 170.666667v682.666666a170.666667 170.666667 0 0 0 170.666667 170.666667h426.666666l367.786667-367.786667c0-4.266667 0-8.533333-4.266667-11.946666A170.666667 170.666667 0 0 0 1024 512zM597.333333 597.333333a85.333333 85.333333 0 0 1-85.333333 85.333334H256a85.333333 85.333333 0 0 1 0-170.666667h170.666667V341.333333a85.333333 85.333333 0 0 1 170.666666 0z" fill="#ffffff" p-id="4716"></path></svg>
@@ -185,7 +200,7 @@ onMounted(() => getNum())
                     </el-collapse>
                 </div>
                 
-            </div>
+            </div> -->
         </div>
         <div class="pagechange">
             <el-pagination v-model:current-page="currentPage" :page-size="20" background layout="prev, pager, next" :total="200" />
@@ -210,36 +225,34 @@ onMounted(() => getNum())
             width: 100%;
             height: 55px;
             margin:0 auto;
-            display: flex;
-            justify-content:center;
             .boxes{
-                width: 900px;
+                width: 600px;
                 display: flex;
                 justify-content: space-between;
+                margin: 0 auto;
             }
             .box {
                 width: 100px;
                 height: 50px;
-                background: rgb(255, 255, 255);
-                border-radius: 20px;
-                box-shadow: 0.3em 0.3em 0.7em #00000015;
                 transition: border 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-                border: rgb(250, 250, 250) 0.2em solid;
+                border-bottom: rgb(250, 250, 250) 0.2em solid;
                 display: flex;
                 flex-direction: column;
-                justify-content: center;
+                justify-content: space-around;
                 align-items: center;
                 cursor: pointer;
                 p{
-                    font-size: 10px;
+                    color: #fff;
+                    font-size: 20px;
                     font-weight: 800;
                 }
                 i{
-                    font-size: 10px;
+                    color: #fff;
+                    font-size: 15px;
                 }
             }
             .box:hover {
-                border: #006fff 0.2em solid;
+                border-bottom: #006fff 0.4em solid;
             }
         }
         .show{
@@ -292,6 +305,9 @@ onMounted(() => getNum())
             justify-content: center;
             background: #fff;
             padding: 30px 0;
+            position: fixed;
+            bottom: 10px;
+            left: calc(50% - 196px);
         }
     }
 </style>
